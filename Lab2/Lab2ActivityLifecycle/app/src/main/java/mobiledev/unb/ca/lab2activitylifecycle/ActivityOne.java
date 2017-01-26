@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 public class ActivityOne extends Activity {
@@ -34,15 +35,11 @@ public class ActivityOne extends Activity {
     private int mOnRestartCount = 0;
     private Button mActivityTwoBtn;
 
-
-
-    // TODO 2:
-    // Declare four private TextView Objects above. The will contain counts of the
-    // four lifecycle method calls indicated in the activity layout XML. To contain
-    // references to Android SDK Object types, they must be programmatically
-    // declared as instances of the object type, much like when
-    // declaring an int, double, or String. All rules of Java continue
     // to apply.
+    TextView mOnCreateText;
+    TextView mOnStartText;
+    TextView mOnResumeText;
+    TextView mOnRestartText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,20 +63,19 @@ public class ActivityOne extends Activity {
                 // it will need access to an email application activity. We will
                 // investigate intents further in a future lab!
                 Intent intent = new Intent(ActivityOne.this, ActivityTwo.class);
+                startActivity(intent);
 
-                // TODO 3:
-                // Launch the Activity using the above intent. For more information,
-                // consult the Android API documentation for starting activities:
-                // http://developer.android.com/reference/android/app/Activity.html#startActivity(android.content.Intent)
 
             }
         });
 
-        // TODO 4:
         // Use the above Button resource reference example to capture TextView
         // references for mOnCreateText, mOnStartText, mOnResumeText, and
         // mOnRestartText
-
+        mOnCreateText = (TextView) findViewById(R.id.onCreate);
+        mOnStartText = (TextView) findViewById(R.id.onStart);
+        mOnResumeText = (TextView) findViewById(R.id.onResume);
+        mOnRestartText  = (TextView) findViewById(R.id.onRestart);
 
         // HINT for 6:
         // This checks whether or not a savedInstanceState currently exists
@@ -87,15 +83,12 @@ public class ActivityOne extends Activity {
         if (savedInstanceState != null) {
 
             mOnCreateCount = savedInstanceState.getInt(CREATE_VALUE);
-
-            // TODO 6:
-            // If a savedInstanceState Bundle exists then there have already
-            // been system calls made to activity lifecycle methods. We can
-            // use this Bundle to set current values.
+            mOnStartCount = savedInstanceState.getInt(START_VALUE);
+            mOnResumeCount = savedInstanceState.getInt(RESUME_VALUE);
+            mOnRestartCount = savedInstanceState.getInt(RESTART_VALUE);
         }
 
-        // TODO 8:
-        // Increment mOnCreateCount
+        mOnCreateCount++;
 
         updateCountsDisplay();
     }
@@ -105,8 +98,7 @@ public class ActivityOne extends Activity {
         Log.i(TAG, "onStart() called");
         super.onStart();
 
-        // TODO 8:
-        // Increment mOnStartCount
+        mOnStartCount++;
 
         updateCountsDisplay();
     }
@@ -116,8 +108,7 @@ public class ActivityOne extends Activity {
         Log.i(TAG, "onResume() called");
         super.onResume();
 
-        // TODO 8:
-        // Increment mOnResumeCount
+        mOnResumeCount++;
 
         updateCountsDisplay();
     }
@@ -127,8 +118,7 @@ public class ActivityOne extends Activity {
         Log.i(TAG, "onRestart() called");
         super.onRestart();
 
-        // TODO 8:
-        // Increment mOnRestartCount
+        mOnRestartCount++;
 
         updateCountsDisplay();
     }
@@ -137,13 +127,9 @@ public class ActivityOne extends Activity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
 
         savedInstanceState.putInt(CREATE_VALUE, mOnCreateCount);
-
-        // TODO 5:
-        // Following the above example, save the current counters to a
-        // savedInstanceState Bundle so they can be refreshed when
-        // returning to this Activity. These behave as key:value pairs,
-        // which you may be familiar with if you've taken Info 1103!
-
+        savedInstanceState.putInt(START_VALUE, mOnStartCount);
+        savedInstanceState.putInt(RESUME_VALUE, mOnResumeCount);
+        savedInstanceState.putInt(RESTART_VALUE, mOnRestartCount);
 
         // Must always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
@@ -151,11 +137,10 @@ public class ActivityOne extends Activity {
 
     public void updateCountsDisplay() {
 
-        YourOnCreateTextVariableName.setText("onCreate() calls: " + mOnCreateCount);
-
-        // TODO 7:
-        // Update the TextView resources to the correct counter.
-        // Follow the provided example.
+        mOnCreateText.setText("onCreate() calls: " + mOnCreateCount);
+        mOnStartText.setText("onStart() calls: " + mOnStartCount);
+        mOnResumeText.setText("onResume() calls: " + mOnResumeCount);
+        mOnRestartText.setText("onRestart() calls: " + mOnRestartCount);
     }
 
     @Override
