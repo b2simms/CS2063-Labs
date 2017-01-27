@@ -14,5 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Start"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:id="@+id/start_button"
+        android:background="@color/accent_material_dark" />
 </RelativeLayout>
