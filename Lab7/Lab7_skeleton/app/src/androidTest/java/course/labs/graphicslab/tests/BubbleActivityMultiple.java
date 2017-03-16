@@ -39,7 +39,7 @@ public class BubbleActivityMultiple extends
 		solo.waitForActivity(course.labs.graphicslab.BubbleActivity.class, delay);
 
 		// Set Still Mode
-		solo.clickOnActionBarItem(course.labs.graphicslab.R.id.menu_still_mode);
+		//solo.clickOnActionBarItem(course.labs.graphicslab.R.id.menu_still_mode);
 
 		solo.sleep(delay);
 

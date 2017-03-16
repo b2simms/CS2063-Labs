@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Building Auditor</string>
+    <string name="title_building_detail">Building Detail</string>
+    <string name="title_building_information">Building Information</string>
+</resources>

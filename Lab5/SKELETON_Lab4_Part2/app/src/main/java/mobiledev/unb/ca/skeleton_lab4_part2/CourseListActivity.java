@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import mobiledev.unb.ca.skeleton_lab4_part2.dummy.DummyContent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,24 +37,16 @@ public class CourseListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
-    /** TODO 1:
-     *
-     * Create a DataModel member and List of Course member
-     *
-     */
+    DataModel dataModel;
+    List<Course> courseList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_list);
 
-        /** TODO 2:
-         *
-         * Create a new DataModel instance and get its list of courses. Store these in
-         * the members created above. Notice the DataModel constructor requires a Context.
-         * Remember each Activity has its own Context within an Android application.
-         *
-         */
+        dataModel = new DataModel(CourseListActivity.this);
+        courseList = new ArrayList<Course>();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,37 +75,16 @@ public class CourseListActivity extends AppCompatActivity {
     }
 
 
-    /** TODO 3:
-     *
-     * Notice that the RecyclerView is being passed an Adapter based on DummyContent.
-     * Because we are operating with Course items, we must instead pass the collection
-     * of Course items we obtained from our DataModel above to this Adapter.
-     * Do that here.
-     *
-     */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(dataModel.getCourses()));
     }
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        /** TODO 4:
-         *
-         * Again, DummyContent values are being worked with here. Alter mValues
-         * to instead store a local copy of our Course data that we captured from
-         * our DataModel above.
-         *
-         */
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<Course> mValues;
 
-
-        /** TODO 5:
-         *
-         * Again, replace the instance of DummyContent with our Course items.
-         *
-         */
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
+        public SimpleItemRecyclerViewAdapter(List<Course> items) {
             mValues = items;
         }
 
@@ -123,20 +95,11 @@ public class CourseListActivity extends AppCompatActivity {
             return new ViewHolder(view);
         }
 
-        /** TODO 7:
-         *
-         * Notice how mContentView is attempting to be set with mValues.get(position).content
-         * However, our Course items do not contain a content field. Given that this
-         * onBindViewHolder is setting up our scrolling RecyclerView display we must consider
-         * what information we wish that display to have. As described, we want to display
-         * the Course ID and course name. Replace .content with the course name.
-         *
-         */
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.mIdView.setText(mValues.get(position).getId());
+            holder.mContentView.setText(mValues.get(position).getName());
 
             /** TODO 8:
              *
@@ -167,7 +130,7 @@ public class CourseListActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(CourseDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        arguments.putString(CourseDetailFragment.ARG_ITEM_ID, holder.mItem.desc);
                         CourseDetailFragment fragment = new CourseDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -176,7 +139,7 @@ public class CourseListActivity extends AppCompatActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, CourseDetailActivity.class);
-                        intent.putExtra(CourseDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        intent.putExtra(CourseDetailFragment.ARG_ITEM_ID, holder.mItem.desc);
 
                         context.startActivity(intent);
                     }
@@ -189,17 +152,11 @@ public class CourseListActivity extends AppCompatActivity {
             return mValues.size();
         }
 
-        /** TODO 6:
-         *
-         * Replace the instance of a public DummyContent item with an instance of
-         * a Course instead.
-         *
-         */
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
+            public Course mItem;
 
             public ViewHolder(View view) {
                 super(view);

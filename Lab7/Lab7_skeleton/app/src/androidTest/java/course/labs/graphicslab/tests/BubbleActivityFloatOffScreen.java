@@ -39,7 +39,7 @@ public class BubbleActivityFloatOffScreen extends
 				delay);
 
 		// Click on action bar item
-		solo.clickOnActionBarItem(course.labs.graphicslab.R.id.menu_single_speed);
+		//solo.clickOnActionBarItem(course.labs.graphicslab.R.id.menu_single_speed);
 
 		solo.sleep(delay);
 

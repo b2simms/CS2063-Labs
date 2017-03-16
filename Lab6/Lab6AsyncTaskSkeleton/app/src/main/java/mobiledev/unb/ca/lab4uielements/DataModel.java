@@ -4,6 +4,7 @@ import javax.json.Json;
 import javax.json.stream.JsonParser;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -32,10 +33,24 @@ public class DataModel {
             // Hint: Read this:
             // http://developer.android.com/training/basics/network-ops/connecting.html
 
+            URL url = new URL(requestURL);
+            connection = (HttpURLConnection) url.openConnection();
+            // Timeout for reading InputStream arbitrarily set to 3000ms.
+            connection.setReadTimeout(3000);
+            // Timeout for connection.connect() arbitrarily set to 3000ms.
+            connection.setConnectTimeout(3000);
+            // For this use case, set HTTP method to GET.
+            connection.setRequestMethod("GET");
+            // Already true by default but setting just in case; needs to be true since this request
+            // is carrying an input (response) body.
+            connection.setDoInput(true);
+            // Open communications link (network traffic occurs here).
+            connection.connect();
 
-
-
-
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                throw new IOException("HTTP error code: " + responseCode);
+            }
 
             inputStream = connection.getInputStream();
 

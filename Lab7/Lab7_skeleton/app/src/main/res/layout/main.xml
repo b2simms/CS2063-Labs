@@ -29,10 +29,10 @@
             android:text="Number of bubbles: "/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="71dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/count"
+            android:id="@+id/countUnique"
             android:text="0"/>
     </LinearLayout>
 
